@@ -22,7 +22,7 @@ jobs:
       run: nuget restore
 
     - name: Build Solution
-      run: msbuild /p:Configuration=Release
+      run: msbuild CyberSecurity_ChatBot.sln /t:Restore /p:Configuration=Release
 
     - name: Display Success Message
       run: echo Build completed successfully!
