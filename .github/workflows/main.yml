@@ -18,9 +18,6 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.3.1
 
-    - name: Restore NuGet packages
-      run: nuget restore
-
     - name: Build Solution
       run: msbuild CyberSecurity_ChatBot.sln /t:Restore /p:Configuration=Release
 
