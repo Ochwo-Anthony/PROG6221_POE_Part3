@@ -7,7 +7,10 @@ Project Description:
 The Cybersecurity Awareness Bot is a C# console application designed to educate users about cybersecurity topics. It utilizes a friendly chatbot interface where users can interact with the bot to ask questions related to topics like password safety, phishing, and safe browsing.
 
 GITHUB LINK:
-https://github.com/Ochwo-Anthony/PROG6221-POE-Part3
+https://github.com/Ochwo-Anthony/PROG6221_POE_Part3
+
+UNLISTED YOUTUBE VIDEO LINK:
+
 
 Project Structure:
 The project has the following structure:
