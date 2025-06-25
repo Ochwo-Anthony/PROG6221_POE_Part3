@@ -19,7 +19,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.3.1
 
     - name: Build Solution
-      run: msbuild PROG6221_POE_Part3/CyberSecurity_ChatBot.sln /t:Restore,Build /p:Configuration=Release
+      run: msbuild CyberSecurity_ChatBot/CyberSecurity_ChatBot.sln /t:Restore,Build /p:Configuration=Release
 
     - name: Display Success Message
       run: echo Build completed successfully!
