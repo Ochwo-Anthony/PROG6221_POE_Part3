@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberSecurity_ChatBot"
         mc:Ignorable="d"
+        Background="{StaticResource PrimaryColor}"
         Title="Enter Your Name" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBlock Text="Welcome to CyberBot!" FontSize="32" FontWeight="Bold"
@@ -19,5 +20,7 @@
         <Button Content="Enter" Width="150" Height="40"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0"
                 Click="EnterButton_Click"/>
+        <TextBlock Text="© 2025 CyberBot | All rights reserved" FontSize="12"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"/>
     </Grid>
 </Window>

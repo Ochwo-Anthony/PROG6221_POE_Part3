@@ -23,16 +23,55 @@ namespace CyberSecurity_ChatBot
     {
 
         private string userName;
-        public ChatWindow()
+        public ChatWindow(string name)
         {
             InitializeComponent();
             userName = name;
             FadeInWindow();
 
-            AddBotMessage($"Hello {userName}, welcome to CyberBot!");
-            AddBotMessage("Ask me about passwords, phishing, privacy, 2FA, safe browsing, antivirus, or cloud.");
-            AddBotMessage("Type 'exit' to end the chat.");
+            Loaded += async (s, e) =>
+            {
+                await TypeBotMessage($"Hello {userName}, welcome to CyberBot!");
+                await Task.Delay(500); // Optional pause between messages
+                await TypeBotMessage("Ask me about passwords, phishing, privacy, 2FA, safe browsing, antivirus, or cloud.");
+                await Task.Delay(500); // Optional pause between messages
+                await TypeBotMessage("Type 'exit' to end the chat.");
+            };
+
         }
+
+        private async Task TypeBotMessage(string message)
+        {
+            Border botBubble = new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(58, 58, 58)),
+                CornerRadius = new CornerRadius(15),
+                Padding = new Thickness(10),
+                Margin = new Thickness(10),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MaxWidth = 300
+            };
+
+            TextBlock botText = new TextBlock
+            {
+                Text = "", // Start empty
+                Foreground = Brushes.White,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            botBubble.Child = botText;
+            ChatStack.Children.Add(botBubble);
+            ChatScroll.ScrollToEnd();
+
+            // Typing animation: show one character at a time
+            foreach (char c in message)
+            {
+                botText.Text += c;
+                await Task.Delay(50); // Typing speed (50ms per character)
+                ChatScroll.ScrollToEnd(); // Keep scroll at the bottom as text grows
+            }
+        }
+
 
         private async void BtnSend_Click(object sender, RoutedEventArgs e)
         {
@@ -43,56 +82,72 @@ namespace CyberSecurity_ChatBot
 
             AddUserMessage(input);
 
-            if (input.ToLower() == "exit")
-            {
-                MessageBox.Show($"Thank you, {userName}! Stay safe online.");
-                this.Close();
-                return;
-            }
-
             txtUserInput.Clear();
 
-            AddBotMessage("Typing...");
+            // Show typing indicator
+            Border typingIndicator = new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(58, 58, 58)),
+                CornerRadius = new CornerRadius(15),
+                Padding = new Thickness(10),
+                Margin = new Thickness(10),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MaxWidth = 300
+            };
 
-            await Task.Delay(1000); // Simulated typing delay
+            TextBlock typingText = new TextBlock
+            {
+                Text = "Typing...",
+                Foreground = Brushes.White,
+                TextWrapping = TextWrapping.Wrap
+            };
 
-            // Remove "Typing..." message
-            ChatStack.Children.RemoveAt(ChatStack.Children.Count - 1);
+            typingIndicator.Child = typingText;
+            ChatStack.Children.Add(typingIndicator);
+            ChatScroll.ScrollToEnd();
 
+            // Simulate thinking delay
+            await Task.Delay(1000);
+
+            // Remove typing indicator
+            ChatStack.Children.Remove(typingIndicator);
+
+            // Get bot response and type it out
             string response = ResponseSystem.GetResponse(input, userName);
-            AddBotMessage(response);
+            await TypeBotMessage($"CyberBOT: {response}");
 
             ChatScroll.ScrollToEnd();
+
         }
 
         private void AddUserMessage(string message)
         {
-            TextBlock userBubble = new TextBlock
+            Border userBubble = new Border
             {
-                Text = $"You: {message}",
-                Background = System.Windows.Media.Brushes.LightBlue,
+                Background = Brushes.LimeGreen,
+                CornerRadius = new CornerRadius(15), // ✅ Valid here
                 Padding = new Thickness(10),
                 Margin = new Thickness(10),
-                TextWrapping = TextWrapping.Wrap,
-                HorizontalAlignment = HorizontalAlignment.Right
+                HorizontalAlignment = HorizontalAlignment.Right,
+                MaxWidth = 300
             };
+
+            TextBlock userText = new TextBlock
+            {
+                Text = $"You: {message}",
+                TextWrapping = TextWrapping.Wrap,               
+            };
+
+            userBubble.Child = userText;
+
             ChatStack.Children.Add(userBubble);
             ChatScroll.ScrollToEnd();
         }
 
-        private void AddBotMessage(string message)
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock botBubble = new TextBlock
-            {
-                Text = $"Bot: {message}",
-                Background = System.Windows.Media.Brushes.LightGray,
-                Padding = new Thickness(10),
-                Margin = new Thickness(10),
-                TextWrapping = TextWrapping.Wrap,
-                HorizontalAlignment = HorizontalAlignment.Left
-            };
-            ChatStack.Children.Add(botBubble);
-            ChatScroll.ScrollToEnd();
+            MessageBox.Show($"Thank you, {userName}! Stay safe online.");
+            this.Close();
         }
 
         private void FadeInWindow()

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberSecurity_ChatBot"
         mc:Ignorable="d"
+        Background="{StaticResource PrimaryColor}"
         Title="CyberBOT" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBlock Text="CyberBot" FontSize="48" FontWeight="Bold"
