@@ -1,0 +1,23 @@
+﻿<Window x:Class="CyberSecurity_ChatBot.NameEntryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CyberSecurity_ChatBot"
+        mc:Ignorable="d"
+        Title="Enter Your Name" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock Text="Welcome to CyberBot!" FontSize="32" FontWeight="Bold"
+                   HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,60,0,0" />
+
+        <TextBlock Text="Please enter your name:" FontSize="16"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0"/>
+
+        <TextBox x:Name="txtUserName" Width="250" Height="30" FontSize="16"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Button Content="Enter" Width="150" Height="40"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0"
+                Click="EnterButton_Click"/>
+    </Grid>
+</Window>

@@ -7,7 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ChatWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="IntroWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="NameEntryWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ChatWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="IntroWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="NameEntryWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
