@@ -17,14 +17,18 @@ namespace CyberSecurity_ChatBot
 {
     /// <summary>
     /// Interaction logic for TaskManagementWindow.xaml
+    /// This window handles task management: adding, viewing, completing, and deleting tasks.
     /// </summary>
     public partial class TaskManagementWindow : Window
     {
-        private TaskManager taskManager;
-        private CyberQuiz quiz;
-        private ActivityLog activityLog;
-        private string userName;
+        private TaskManager taskManager; // Manages task storage and operations
+        private CyberQuiz quiz; // Quiz system (passed for navigation)
+        private ActivityLog activityLog; // Tracks user actions (passed for navigation)
+        private string userName; // Stores current user’s name
 
+        /// <summary>
+        /// Constructor: initializes task window with task manager, quiz, activity log, and user name.
+        /// </summary>
         public TaskManagementWindow(TaskManager manager, CyberQuiz quizInstance, ActivityLog log, string name)
         {
             InitializeComponent();
@@ -32,9 +36,12 @@ namespace CyberSecurity_ChatBot
             quiz = quizInstance;
             activityLog = log;
             userName = name;
-            LoadTasks();
+            LoadTasks(); // Display existing tasks on load
         }
 
+        /// <summary>
+        /// Handles navigation between Chat, Task, Quiz, and Activity Log windows.
+        /// </summary>
         private void NavigationDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (NavigationDropdown.SelectedItem is ComboBoxItem selectedItem)
@@ -44,13 +51,13 @@ namespace CyberSecurity_ChatBot
                 switch (selection)
                 {
                     case "Chat":
-                        ChatWindow chatWindow = new ChatWindow("User"); // Replace "User" with username if available
+                        ChatWindow chatWindow = new ChatWindow("User"); // You can replace "User" with userName for personalization
                         chatWindow.Show();
                         this.Close();
                         break;
 
                     case "Tasks":
-                    
+                        // Already in task window - do nothing
                         break;
 
                     case "Quiz":
@@ -68,21 +75,27 @@ namespace CyberSecurity_ChatBot
             }
         }
 
-
+        /// <summary>
+        /// Loads tasks from the TaskManager and displays them in the ListBox.
+        /// </summary>
         private void LoadTasks()
         {
-            TaskListBox.Items.Clear();
-            foreach (var task in taskManager.GetTasks())
+            TaskListBox.Items.Clear(); // Clear existing items
+            foreach (var task in taskManager.GetTasks()) // Load all current tasks
             {
                 TaskListBox.Items.Add(task);
             }
         }
 
+        /// <summary>
+        /// Adds a new task with an optional reminder date.
+        /// </summary>
         private void BtnAddTask_Click(object sender, RoutedEventArgs e)
         {
             string taskTitle = txtTaskTitle.Text.Trim();
             DateTime? reminderDate = null;
 
+            // Check if a reminder date is selected
             if (datePickerReminder.SelectedDate.HasValue)
             {
                 reminderDate = datePickerReminder.SelectedDate.Value;
@@ -90,6 +103,7 @@ namespace CyberSecurity_ChatBot
 
             if (!string.IsNullOrEmpty(taskTitle))
             {
+                // Add task with or without a reminder
                 if (reminderDate.HasValue)
                 {
                     taskManager.AddTask(taskTitle, $"Remember to {taskTitle}.", reminderDate.Value);
@@ -99,35 +113,45 @@ namespace CyberSecurity_ChatBot
                     taskManager.AddTask(taskTitle, $"Remember to {taskTitle}.");
                 }
 
+                // Clear input fields after adding
                 txtTaskTitle.Clear();
                 datePickerReminder.SelectedDate = null;
-                LoadTasks();
+
+                LoadTasks(); // Refresh task list
             }
         }
 
+        /// <summary>
+        /// Marks the selected task as completed.
+        /// </summary>
         private void BtnCompleteTask_Click(object sender, RoutedEventArgs e)
         {
             if (TaskListBox.SelectedItem != null)
             {
                 var task = TaskListBox.SelectedItem as TaskItem;
                 taskManager.CompleteTask(task.Title);
-                LoadTasks();
+                LoadTasks(); // Refresh task list
             }
         }
 
+        /// <summary>
+        /// Reloads and displays the task list.
+        /// </summary>
         private void BtnLoadTasks_Click(object sender, RoutedEventArgs e)
         {
             LoadTasks();
         }
 
-
+        /// <summary>
+        /// Deletes the selected task from the list.
+        /// </summary>
         private void BtnDeleteTask_Click(object sender, RoutedEventArgs e)
         {
             if (TaskListBox.SelectedItem != null)
             {
                 var task = TaskListBox.SelectedItem as TaskItem;
                 taskManager.DeleteTask(task.Title);
-                LoadTasks();
+                LoadTasks(); // Refresh task list
             }
         }
     }

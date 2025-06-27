@@ -6,20 +6,29 @@ using System.Threading.Tasks;
 
 namespace CyberSecurity_ChatBot
 {
+    /// <summary>
+    /// Represents a task item with title, description, optional reminder, and completion status.
+    /// </summary>
     public class TaskItem
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime? ReminderDate { get; set; }
-        public bool IsCompleted { get; set; }
+        public string Title { get; set; } // Task name
+        public string Description { get; set; } // Task details
+        public DateTime? ReminderDate { get; set; } // Optional reminder date
+        public bool IsCompleted { get; set; } // Task completion status
 
+        /// <summary>
+        /// Returns a formatted string representation of the task for easy display.
+        /// </summary>
         public override string ToString()
         {
-            string status = IsCompleted ? "Completed" : "Pending";
-            string reminder = ReminderDate.HasValue ? $" (Reminder: {ReminderDate.Value.ToShortDateString()})" : "";
+            string status = IsCompleted ? "Completed" : "Pending"; // Show task status
+            string reminder = ReminderDate.HasValue ? $" (Reminder: {ReminderDate.Value.ToShortDateString()})" : ""; // Show reminder if set
             return $"{Title}: {Description}{reminder} - {status}";
         }
 
+        /// <summary>
+        /// Returns a display-friendly task name with reminder date if available.
+        /// </summary>
         public string DisplayText
         {
             get
@@ -32,10 +41,16 @@ namespace CyberSecurity_ChatBot
         }
     }
 
+    /// <summary>
+    /// Manages the list of tasks: add, view, complete, delete.
+    /// </summary>
     public class TaskManager
     {
-        private List<TaskItem> tasks = new List<TaskItem>();
+        private List<TaskItem> tasks = new List<TaskItem>(); // List to store tasks
 
+        /// <summary>
+        /// Adds a new task with optional reminder.
+        /// </summary>
         public string AddTask(string title, string description, DateTime? reminderDate = null)
         {
             tasks.Add(new TaskItem
@@ -43,12 +58,15 @@ namespace CyberSecurity_ChatBot
                 Title = title,
                 Description = description,
                 ReminderDate = reminderDate,
-                IsCompleted = false
+                IsCompleted = false // Task starts as incomplete
             });
 
             return $"Task added: {title}. {description} {(reminderDate.HasValue ? $"I'll remind you on {reminderDate.Value.ToShortDateString()}." : "")}";
         }
 
+        /// <summary>
+        /// Returns a list of all tasks in string format.
+        /// </summary>
         public string ViewTasks()
         {
             if (tasks.Count == 0)
@@ -57,11 +75,14 @@ namespace CyberSecurity_ChatBot
             string taskList = "Here are your tasks:\n";
             foreach (var task in tasks)
             {
-                taskList += $"- {task}\n";
+                taskList += $"- {task}\n"; // Use the ToString method of TaskItem
             }
             return taskList;
         }
 
+        /// <summary>
+        /// Marks a task as completed based on the title.
+        /// </summary>
         public string CompleteTask(string title)
         {
             var task = tasks.Find(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
@@ -73,6 +94,9 @@ namespace CyberSecurity_ChatBot
             return $"Task '{title}' not found.";
         }
 
+        /// <summary>
+        /// Deletes a task based on the title.
+        /// </summary>
         public string DeleteTask(string title)
         {
             var task = tasks.Find(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
@@ -84,8 +108,9 @@ namespace CyberSecurity_ChatBot
             return $"Task '{title}' not found.";
         }
 
-
-
+        /// <summary>
+        /// Returns the list of TaskItem objects for GUI display.
+        /// </summary>
         public List<TaskItem> GetTasks()
         {
             return tasks;

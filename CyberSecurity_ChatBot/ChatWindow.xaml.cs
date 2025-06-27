@@ -10,32 +10,42 @@ using System.Windows.Media.Animation;
 
 namespace CyberSecurity_ChatBot
 {
+    /// <summary>
+    /// Chat window logic for CyberSecurity ChatBot.
+    /// Handles chat input, NLP processing, task management, reminders, quiz interaction, and navigation.
+    /// </summary>
     public partial class ChatWindow : Window
     {
-        private string userName;
-        private TaskManager taskManager = new TaskManager();
-        private string pendingTaskTitle = "";
-        private bool awaitingReminder = false;
+        private string userName;                     // Stores user's name
+        private TaskManager taskManager = new TaskManager(); // Manages tasks
+        private string pendingTaskTitle = "";        // Stores task waiting for a reminder confirmation
+        private bool awaitingReminder = false;       // Tracks if the bot is waiting for a reminder setup
 
-        private CyberQuiz quiz = new CyberQuiz();
-        private NlpProcessor nlpProcessor = new NlpProcessor();
-        private ActivityLog activityLog = new ActivityLog();
+        private CyberQuiz quiz = new CyberQuiz();    // Quiz manager
+        private NlpProcessor nlpProcessor = new NlpProcessor(); // NLP processor
+        private ActivityLog activityLog = new ActivityLog();    // Logs user actions
 
+        /// <summary>
+        /// Constructor: Initializes the chat window and displays a welcome message.
+        /// </summary>
         public ChatWindow(string name)
         {
             InitializeComponent();
             userName = name;
-            FadeInWindow();
+            FadeInWindow(); // Applies fade-in animation on window load
 
+            // Display initial bot messages when the window loads
             Loaded += async (s, e) =>
             {
                 await TypeBotMessage($"Hello {userName}, welcome to CyberBot!");
                 await Task.Delay(500);
                 await TypeBotMessage("Ask me about passwords, phishing, privacy, 2FA, safe browsing, antivirus, or cloud.");
-     
             };
         }
 
+        /// <summary>
+        /// Handles send button click: processes user input, triggers NLP, and returns chatbot responses.
+        /// </summary>
         private async void BtnSend_Click(object sender, RoutedEventArgs e)
         {
             string input = txtUserInput.Text.Trim();
@@ -43,22 +53,21 @@ namespace CyberSecurity_ChatBot
             if (string.IsNullOrEmpty(input))
                 return;
 
-            AddUserMessage(input);
+            AddUserMessage(input); // Show user message in chat
             txtUserInput.Clear();
 
-            // Show typing indicator
+            // Show typing animation
             Border typingIndicator = CreateTypingIndicator();
             ChatStack.Children.Add(typingIndicator);
             ChatScroll.ScrollToEnd();
 
-            await Task.Delay(1000);
+            await Task.Delay(1000); // Simulate bot thinking time
             ChatStack.Children.Remove(typingIndicator);
 
             string response = "";
+            var nlpResult = nlpProcessor.ProcessInput(input); // Process user input with NLP
 
-            var nlpResult = nlpProcessor.ProcessInput(input);
-
-            // ========================== NLP ROUTING ==========================
+            // Route based on detected intent
             switch (nlpResult.Intent)
             {
                 case "add_task":
@@ -100,13 +109,13 @@ namespace CyberSecurity_ChatBot
                     break;
             }
 
-            // =================== QUIZ IN PROGRESS ===================
+            // Handle quiz answers if quiz is in progress
             if (quiz.IsQuizInProgress() && nlpResult.Intent != "start_quiz")
             {
                 response = quiz.ProcessAnswer(input);
             }
 
-            // =================== REMINDER PROCESSING ===================
+            // Handle reminder confirmation
             if (awaitingReminder)
             {
                 if (input.ToLower().Contains("no"))
@@ -140,13 +149,15 @@ namespace CyberSecurity_ChatBot
 
             Console.WriteLine($"Detected Intent: {nlpResult.Intent}, Detail: {nlpResult.Detail}");
 
-
             await TypeBotMessage($"CyberBOT: {response}");
             ChatScroll.ScrollToEnd();
         }
 
-        // ============= Helper Methods =============
+        // ================= Helper Methods =================
 
+        /// <summary>
+        /// Creates a "Typing..." bubble to simulate chatbot typing.
+        /// </summary>
         private Border CreateTypingIndicator()
         {
             return new Border
@@ -166,29 +177,35 @@ namespace CyberSecurity_ChatBot
             };
         }
 
+        /// <summary>
+        /// Extracts the number of days for a reminder from user input.
+        /// </summary>
         private int ExtractDaysFromInput(string input)
         {
             input = input.ToLower();
 
             if (input.Contains("today"))
-                return 0; // same day
+                return 0;
 
             if (input.Contains("tomorrow"))
-                return 1; // next day
+                return 1;
 
-            // Optionally add more natural time keywords here
             if (input.Contains("day after tomorrow"))
                 return 2;
 
-            var parts = input.ToLower().Split(' ');
+            // Try to find any number in input
+            var parts = input.Split(' ');
             foreach (var part in parts)
             {
                 if (int.TryParse(part, out int days))
                     return days;
             }
-            return -1;
+            return -1; // No valid number found
         }
 
+        /// <summary>
+        /// Displays the bot's response with typing animation.
+        /// </summary>
         private async Task TypeBotMessage(string message)
         {
             Border botBubble = new Border
@@ -212,6 +229,7 @@ namespace CyberSecurity_ChatBot
             ChatStack.Children.Add(botBubble);
             ChatScroll.ScrollToEnd();
 
+            // Animate text typing
             foreach (char c in message)
             {
                 botText.Text += c;
@@ -220,6 +238,9 @@ namespace CyberSecurity_ChatBot
             }
         }
 
+        /// <summary>
+        /// Displays the user's message in a chat bubble.
+        /// </summary>
         private void AddUserMessage(string message)
         {
             Border userBubble = new Border
@@ -244,12 +265,18 @@ namespace CyberSecurity_ChatBot
             ChatScroll.ScrollToEnd();
         }
 
+        /// <summary>
+        /// Handles exit button click: shows a goodbye message and closes the window.
+        /// </summary>
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show($"Thank you, {userName}! Stay safe online.");
             this.Close();
         }
 
+        /// <summary>
+        /// Applies a fade-in animation to the chat window.
+        /// </summary>
         private void FadeInWindow()
         {
             this.Opacity = 0;
@@ -257,7 +284,11 @@ namespace CyberSecurity_ChatBot
             this.BeginAnimation(Window.OpacityProperty, fadeIn);
         }
 
-        // ================= Navigation =================
+        // ================= Navigation Handling =================
+
+        /// <summary>
+        /// Handles navigation between Chat, Task, Quiz, and Activity Log windows.
+        /// </summary>
         private void NavigationDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (NavigationDropdown.SelectedItem is ComboBoxItem selectedItem)

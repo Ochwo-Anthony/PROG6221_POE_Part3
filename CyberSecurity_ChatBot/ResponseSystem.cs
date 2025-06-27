@@ -6,24 +6,29 @@ using System.Threading.Tasks;
 
 namespace CyberSecurity_ChatBot
 {
+    /// <summary>
+    /// This class handles chatbot responses, topic tracking, sentiment detection, and proactive tips.
+    /// </summary>
     class ResponseSystem
     {
-        private static string favoriteTopic = "";
-        private static Dictionary<string, int> topicCounts = new Dictionary<string, int>();
-        private static int messageCount = 0;
-        private static int proactivePromptThreshold = 5;
-        private static string lastTopicAnswered = "";
-        private static HashSet<int> usedTipIndexes = new HashSet<int>();
-        private static string currentMood = "";
+        private static string favoriteTopic = ""; // Most frequently asked topic
+        private static Dictionary<string, int> topicCounts = new Dictionary<string, int>(); // Tracks how many times each topic was asked
+        private static int messageCount = 0; // Tracks the number of messages exchanged
+        private static int proactivePromptThreshold = 5; // Every 5 messages, give proactive advice
+        private static string lastTopicAnswered = ""; // Tracks the last topic discussed
+        private static HashSet<int> usedTipIndexes = new HashSet<int>(); // Avoids repeating the same tips
+        private static string currentMood = ""; // User's detected mood
 
+        // Keywords that signal the user wants more information
         private static readonly string[] moreInfoTriggers = new string[]
         {
             "anything else", "more info", "tell me more",
             "more information", "what else", "can you elaborate"
         };
 
-        private static Random rand = new Random();
+        private static Random rand = new Random(); // Random number generator for selecting responses
 
+        // Main cybersecurity topics with multiple tips for each
         private static readonly Dictionary<string, string[]> topicResponses = new Dictionary<string, string[]>
         {
             ["password"] = new string[]
@@ -73,6 +78,7 @@ namespace CyberSecurity_ChatBot
             }
         };
 
+        // Responses based on detected user sentiment
         private static readonly Dictionary<string, string> sentimentResponses = new Dictionary<string, string>()
         {
             ["worried"] = "It's completely understandable to feel that way. Scammers can be very convincing. Let me share some tips to help you stay safe.",
@@ -80,14 +86,15 @@ namespace CyberSecurity_ChatBot
             ["frustrated"] = "I know cybersecurity can feel overwhelming at times. I'm here to help make it simpler for you."
         };
 
-        // Entry point for WPF: Call this in the chat window
+        /// <summary>
+        /// Main method to process user input and return an appropriate response.
+        /// </summary>
         public static string GetResponse(string input, string userName)
         {
             messageCount++;
-
             input = input.ToLower();
 
-            // Mood detection
+            // Sentiment detection
             foreach (var sentiment in sentimentResponses.Keys)
             {
                 if (input.Contains(sentiment))
@@ -97,23 +104,26 @@ namespace CyberSecurity_ChatBot
                 }
             }
 
-            // More info triggers
+            // If user asks for more information on the last topic
             if (moreInfoTriggers.Any(trigger => input.Contains(trigger)) && !string.IsNullOrEmpty(lastTopicAnswered))
             {
                 var tips = topicResponses[lastTopicAnswered];
+
                 if (tips != null && tips.Length > 0)
                 {
+                    // Select unused tip
                     var availableIndexes = Enumerable.Range(0, tips.Length)
                         .Where(i => !usedTipIndexes.Contains(i)).ToList();
 
                     if (availableIndexes.Count == 0)
                     {
-                        usedTipIndexes.Clear();
+                        usedTipIndexes.Clear(); // Reset if all tips were used
                         availableIndexes = Enumerable.Range(0, tips.Length).ToList();
                     }
 
                     int selectedIndex = availableIndexes[rand.Next(availableIndexes.Count)];
                     usedTipIndexes.Add(selectedIndex);
+
                     return AdaptResponseToMood(tips[selectedIndex], currentMood);
                 }
                 else
@@ -122,7 +132,7 @@ namespace CyberSecurity_ChatBot
                 }
             }
 
-            // Greeting responses
+            // General greetings
             if (input.Contains("how are you"))
                 return $"I'm doing well, {userName}! Ready to help you stay secure online.";
 
@@ -132,7 +142,7 @@ namespace CyberSecurity_ChatBot
             if (input.Contains("what can i ask") || input.Contains("help"))
                 return "You can ask me about:\n- Password safety\n- Phishing attacks\n- 2FA (Two-Factor Authentication)\n- Social media privacy\n- Safe browsing habits\n- Antivirus and firewalls";
 
-            // Topic matching
+            // Topic matching: check if user asked about a known topic
             foreach (var topic in topicResponses.Keys)
             {
                 if (input.Contains(topic))
@@ -140,7 +150,6 @@ namespace CyberSecurity_ChatBot
                     UpdateTopicCount(topic);
                     lastTopicAnswered = topic;
                     usedTipIndexes.Clear();
-
                     currentMood = "";
 
                     var responses = topicResponses[topic];
@@ -150,7 +159,7 @@ namespace CyberSecurity_ChatBot
                 }
             }
 
-            // Interest capture
+            // Track user interests
             if (input.Contains("i'm interested in"))
             {
                 string[] words = input.Split(' ');
@@ -159,7 +168,7 @@ namespace CyberSecurity_ChatBot
                 return $"Great! I'll remember that you're interested in {interest}. It's a crucial part of staying safe online.";
             }
 
-            // Fallback
+            // Fallback response when input is not recognized
             string[] fallbackResponses = {
                 $"Hmm, I'm not sure about that, {userName}. Try asking something like 'What is phishing?'",
                 $"That's an interesting question! I'll try to learn more about that.",
@@ -169,7 +178,7 @@ namespace CyberSecurity_ChatBot
 
             string response = fallbackResponses[rand.Next(fallbackResponses.Length)];
 
-            // Proactive prompt
+            // Proactive advice based on user's favorite topic every 5 messages
             if (messageCount % proactivePromptThreshold == 0 && !string.IsNullOrEmpty(favoriteTopic))
             {
                 var proactiveTips = topicResponses[favoriteTopic];
@@ -182,6 +191,9 @@ namespace CyberSecurity_ChatBot
             return response;
         }
 
+        /// <summary>
+        /// Updates the topic tracking to find user's favorite topic.
+        /// </summary>
         private static void UpdateTopicCount(string topic)
         {
             if (topicCounts.ContainsKey(topic))
@@ -189,9 +201,13 @@ namespace CyberSecurity_ChatBot
             else
                 topicCounts[topic] = 1;
 
+            // Favorite topic is the one asked about most
             favoriteTopic = topicCounts.OrderByDescending(kv => kv.Value).First().Key;
         }
 
+        /// <summary>
+        /// Adjusts the response based on detected user mood.
+        /// </summary>
         private static string AdaptResponseToMood(string baseResponse, string mood)
         {
             switch (mood)

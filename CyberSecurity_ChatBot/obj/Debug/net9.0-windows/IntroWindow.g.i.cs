@@ -53,7 +53,7 @@ namespace CyberSecurity_ChatBot {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/CyberSecurity_ChatBot;component/introwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CyberSecurity_ChatBot;V1.0.0.0;component/introwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\IntroWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
