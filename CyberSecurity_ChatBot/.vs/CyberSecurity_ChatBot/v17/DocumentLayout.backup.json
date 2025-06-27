@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|c:\\users\\lab_services_student\\desktop\\github\\prog6221_poe_part3\\cybersecurity_chatbot\\cyberquiz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|solutionrelative:cyberquiz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|c:\\users\\lab_services_student\\desktop\\github\\prog6221_poe_part3\\cybersecurity_chatbot\\activitylog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|solutionrelative:activitylog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|c:\\users\\lab_services_student\\desktop\\github\\prog6221_poe_part3\\cybersecurity_chatbot\\nlpprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|solutionrelative:nlpprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|c:\\users\\lab_services_student\\desktop\\github\\prog6221_poe_part3\\cybersecurity_chatbot\\taskitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|solutionrelative:taskitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B671EC44-5634-412F-AFF6-F4C8EA93F198}|CyberSecurity_ChatBot.csproj|c:\\users\\lab_services_student\\desktop\\github\\prog6221_poe_part3\\cybersecurity_chatbot\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -18,32 +26,55 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CyberQuiz.cs",
-              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\CyberQuiz.cs",
-              "RelativeDocumentMoniker": "CyberQuiz.cs",
-              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\CyberQuiz.cs",
-              "RelativeToolTip": "CyberQuiz.cs",
-              "ViewState": "AgIAANIAAAAAAAAAAAAqwPQAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "NlpProcessor.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\NlpProcessor.cs",
+              "RelativeDocumentMoniker": "NlpProcessor.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\NlpProcessor.cs",
+              "RelativeToolTip": "NlpProcessor.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T20:54:43.525Z",
+              "WhenOpened": "2025-06-27T21:03:02.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TaskItem.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\TaskItem.cs",
+              "RelativeDocumentMoniker": "TaskItem.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\TaskItem.cs",
+              "RelativeToolTip": "TaskItem.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAUwDkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T21:03:00.919Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ActivityLog.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\ActivityLog.cs",
+              "RelativeDocumentMoniker": "ActivityLog.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\ActivityLog.cs",
+              "RelativeToolTip": "ActivityLog.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAQwCwAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T21:02:51.78Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "App.xaml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\App.xaml",
               "RelativeDocumentMoniker": "App.xaml",
               "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\App.xaml",
               "RelativeToolTip": "App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-06-27T19:01:05.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-27T19:01:05.592Z"
             }
           ]
         }

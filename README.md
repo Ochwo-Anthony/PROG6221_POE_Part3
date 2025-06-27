@@ -12,42 +12,34 @@ GITHUB LINK:
 https://github.com/Ochwo-Anthony/PROG6221_POE_Part3
 
 UNLISTED YOUTUBE VIDEO LINK:
+https://www.youtube.com/watch?v=yIKaLkx-rHQ
 
 
 Project Structure:
 The project has the following structure:
 CyberSecurity_ChatBot/
-│
-├── .vs/                         # Visual Studio configuration
-├── bin/Debug/net9.0-windows/    # Build outputs
-├── obj/                         # Temporary build files
-│
-├── ActivityLog.cs               # Activity Log tracking system
-├── App.xaml                     # WPF App configuration
-├── App.xaml.cs
-├── AssemblyInfo.cs
-│
-├── ChatWindow.xaml              # Main chat window UI
-├── ChatWindow.xaml.cs
-│
-├── CyberQuiz.cs                 # Cybersecurity Quiz logic
-├── CyberSecurity_ChatBot.csproj # Project configuration
-├── CyberSecurity_ChatBot.sln    # Solution file
-│
-├── IntroWindow.xaml             # Introductory screen UI
-├── IntroWindow.xaml.cs
-│
-├── MainWindow.xaml              # Startup window
-├── MainWindow.xaml.cs
-│
-├── NameEntryWindow.xaml         # Name entry screen UI
-├── NameEntryWindow.xaml.cs
-│
-├── NlpProcessor.cs              # Natural Language Processing logic
-├── ResponseSystem.cs            # Chatbot response handling
-├── TaskItem.cs                  # Task management logic
-│
-└── README.md                    # Project documentation
+	.vs/ (Visual Studio configuration files)
+	bin/Debug/net9.0-windows/ (Build output files)
+	obj/ (Temporary build files)
+	ActivityLog.cs (Activity Log tracking system)
+	App.xaml (WPF App configuration)
+	App.xaml.cs
+	AssemblyInfo.cs
+	ChatWindow.xaml (Main chat window UI)
+	ChatWindow.xaml.cs
+	CyberQuiz.cs (Cybersecurity Quiz logic)
+	CyberSecurity_ChatBot.csproj (Project configuration file)
+	CyberSecurity_ChatBot.sln (Visual Studio solution file)
+	IntroWindow.xaml (Introductory screen UI)
+	IntroWindow.xaml.cs
+	MainWindow.xaml (Startup window)
+	MainWindow.xaml.cs
+	NameEntryWindow.xaml (Name entry screen UI)
+	NameEntryWindow.xaml.cs
+	NlpProcessor.cs (Natural Language Processing logic)
+	ResponseSystem.cs (Chatbot response handling)
+	TaskItem.cs (Task management logic)
+	README.md (Project documentation)
 
 
 

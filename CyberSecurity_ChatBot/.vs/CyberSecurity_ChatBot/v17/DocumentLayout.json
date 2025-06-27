@@ -38,8 +38,7 @@
               "RelativeToolTip": "NlpProcessor.cs",
               "ViewState": "AgIAAFYAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T21:03:02.383Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-27T21:03:02.383Z"
             },
             {
               "$type": "Document",
@@ -51,8 +50,7 @@
               "RelativeToolTip": "TaskItem.cs",
               "ViewState": "AgIAAFwAAAAAAAAAAAAUwDkAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T21:03:00.919Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-27T21:03:00.919Z"
             },
             {
               "$type": "Document",
@@ -62,7 +60,7 @@
               "RelativeDocumentMoniker": "ActivityLog.cs",
               "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\ActivityLog.cs",
               "RelativeToolTip": "ActivityLog.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACUAAAAAAAAAAAAQwCwAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-27T21:02:51.78Z",
               "EditorCaption": ""
@@ -76,8 +74,7 @@
               "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\Github\\PROG6221_POE_Part3\\CyberSecurity_ChatBot\\App.xaml",
               "RelativeToolTip": "App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-06-27T19:01:05.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-27T19:01:05.592Z"
             }
           ]
         }
