@@ -80,7 +80,7 @@ namespace CyberSecurity_ChatBot
             ["frustrated"] = "I know cybersecurity can feel overwhelming at times. I'm here to help make it simpler for you."
         };
 
-        // 👉 Entry point for WPF: Call this in the chat window
+        // Entry point for WPF: Call this in the chat window
         public static string GetResponse(string input, string userName)
         {
             messageCount++;

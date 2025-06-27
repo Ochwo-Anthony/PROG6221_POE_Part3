@@ -1,0 +1,76 @@
+﻿<Window x:Class="CyberSecurity_ChatBot.TaskManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CyberSecurity_ChatBot"
+        mc:Ignorable="d"
+        Title="Task Management" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PrimaryColor}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Navigation bar -->
+            <RowDefinition Height="*"/>
+            <!-- Task management content -->
+        </Grid.RowDefinitions>
+
+        <!-- Navigation Bar -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" Margin="10,5">
+            <ComboBox x:Name="NavigationDropdown" Width="150" Margin="0,0,10,0" SelectionChanged="NavigationDropdown_SelectionChanged"
+                      Background="{StaticResource NavComboBoxBackground}"
+                      Foreground="{StaticResource NavComboBoxForeground}">
+                <ComboBox.Resources>
+                    <!-- Style for Dropdown Items -->
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="{StaticResource NavComboBoxItemBackground}"/>
+                        <Setter Property="Foreground" Value="{StaticResource NavComboBoxItemForeground}"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </ComboBox.Resources>
+
+                <ComboBoxItem Content="Chat"/>
+                <ComboBoxItem Content="Tasks" IsSelected="True"/>
+                <ComboBoxItem Content="Quiz"/>
+                <ComboBoxItem Content="Activity Log"/>
+            </ComboBox>
+
+            <TextBlock Text="CyberBOT - Task Manager" FontSize="24" FontWeight="Bold" Foreground="{StaticResource NavTextColor}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Task Management Content -->
+        <DockPanel Margin="10" Grid.Row="1">
+
+            <!-- Input Section -->
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                <TextBox Name="txtTaskTitle" Width="250" Margin="5" VerticalAlignment="Center" 
+                         ToolTip="Enter task name" />
+
+                <DatePicker Name="datePickerReminder" Width="160" Margin="5" VerticalAlignment="Center"
+                            ToolTip="Select reminder date " />
+
+                <Button Content="Add Task" Click="BtnAddTask_Click" Width="100" Margin="5" VerticalAlignment="Center"/>
+                <Button Content="Load Tasks" Click="BtnLoadTasks_Click" Width="100" Margin="5" VerticalAlignment="Center"/>
+
+            </StackPanel>
+
+            <!-- Task List with custom text color -->
+            <ListBox Name="TaskListBox" DockPanel.Dock="Top" Height="250" Margin="5">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayText}" Foreground="Black" FontSize="16" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+
+            <!-- Action Buttons -->
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
+                <Button Content="Complete Task" Click="BtnCompleteTask_Click" Width="120" Margin="5"/>
+                <Button Content="Delete Task" Click="BtnDeleteTask_Click" Width="120" Margin="5"/>
+            </StackPanel>
+
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,10 +1,12 @@
 # PROG6221-POE-Part3
 
 
-Project Name: Cybersecurity Awareness Bot
+Project Name: Cybersecurity Awareness Bot (GUI)
 
 Project Description:
-The Cybersecurity Awareness Bot is a C# console application designed to educate users about cybersecurity topics. It utilizes a friendly chatbot interface where users can interact with the bot to ask questions related to topics like password safety, phishing, and safe browsing.
+The Cybersecurity Awareness Bot is an educational chatbot application built with C# WPF (Windows Presentation Foundation). It helps users learn about cybersecurity topics such as password safety, phishing, safe browsing, and privacy settings. The bot integrates an interactive chat, a task assistant with reminders, a cybersecurity quiz, an NLP-based conversation system, and an activity log.
+
+The project builds upon the console-based chatbot from Part 1 and Part 2, now expanded into a full graphical user interface (GUI) application.
 
 GITHUB LINK:
 https://github.com/Ochwo-Anthony/PROG6221_POE_Part3
@@ -14,6 +16,38 @@ UNLISTED YOUTUBE VIDEO LINK:
 
 Project Structure:
 The project has the following structure:
+CyberSecurity_ChatBot/
+│
+├── .vs/                         # Visual Studio configuration
+├── bin/Debug/net9.0-windows/    # Build outputs
+├── obj/                         # Temporary build files
+│
+├── ActivityLog.cs               # Activity Log tracking system
+├── App.xaml                     # WPF App configuration
+├── App.xaml.cs
+├── AssemblyInfo.cs
+│
+├── ChatWindow.xaml              # Main chat window UI
+├── ChatWindow.xaml.cs
+│
+├── CyberQuiz.cs                 # Cybersecurity Quiz logic
+├── CyberSecurity_ChatBot.csproj # Project configuration
+├── CyberSecurity_ChatBot.sln    # Solution file
+│
+├── IntroWindow.xaml             # Introductory screen UI
+├── IntroWindow.xaml.cs
+│
+├── MainWindow.xaml              # Startup window
+├── MainWindow.xaml.cs
+│
+├── NameEntryWindow.xaml         # Name entry screen UI
+├── NameEntryWindow.xaml.cs
+│
+├── NlpProcessor.cs              # Natural Language Processing logic
+├── ResponseSystem.cs            # Chatbot response handling
+├── TaskItem.cs                  # Task management logic
+│
+└── README.md                    # Project documentation
 
 
 
@@ -23,17 +57,100 @@ Before running the application, ensure that you have the following:
 - .NET SDK (version 9 or later) installed on your machine.
   - You can download it from: https://dotnet.microsoft.com/download
 - GitHub account for accessing the project repository and running CI/CD pipelines.
-
+- A Windows system that supports WPF desktop applications
 Setup and Installation:
+1. Clone the repository:
 
+	git clone https://github.com/Ochwo-Anthony/PROG6221_POE_Part3.git
+
+2. Open the project in Visual Studio 2022 or later.
+
+3. Ensure that the target framework is set to .NET 9.0.
+
+4. Build the solution:
+
+	Go to Build > Build Solution or press Ctrl + Shift + B.
+
+5. Run the application:
+
+	Press F5 to start the WPF app.
 
 Usage:
 
+Features and User Guide
+
+Task Assistant with Reminders
+
+	Add cybersecurity tasks like "Enable two-factor authentication" or "Review privacy settings."
+	Specify a reminder date or timeframe (e.g., "Remind me in 3 days").
+	View, complete, and delete tasks.
+	Fully integrated with chatbot conversation flow and GUI.
+
+Cybersecurity Quiz (Mini-Game)
+
+Accessible via the navigation menu.
+
+	Contains 10 cybersecurity questions (mix of multiple-choice and true/false).
+	Provides immediate feedback after each answer.
+	Displays final score and performance feedback at the end of the quiz.
+
+Natural Language Processing (NLP) Simulation
+
+Recognizes varied phrasing of user commands like:
+
+	"Add a task to update my password"
+	"Set a reminder to enable 2FA"
+	Uses regex and keyword detection to interpret user intent.
+	Handles flexible, natural language input to add tasks, start quizzes, and more.
+
+Activity Log
+
+Records all significant user actions:
+
+	Tasks added, completed, or deleted
+	Reminders set
+	Quiz attempts
+	NLP-triggered actions
+	Accessible via chat command or GUI.
+	Displays the last 5-10 recent actions in a clear list.
+
+Example Interactions
+
+Task Example:
+
+	User:Add task to review privacy settings.Chatbot:Task added with the description "Review account privacy settings to ensure your data is 	protected." Would you like a reminder?
+	User:Yes, remind me in 3 days.Chatbot:Got it! I'll remind you in 3 days.
+
+Quiz Example:
+
+	User:Start quiz.Chatbot:Question: What should you do if you receive an email asking for your password?A) Reply with your passwordB) Delete the 	emailC) Report the email as phishingD) Ignore it
+	User:CChatbot:Correct! Reporting phishing emails helps prevent scams.
+
+NLP Example:
+
+	User:Can you remind me to update my password tomorrow?
+	Chatbot:Reminder set for 'Update my password' on tomorrow's date.
+
+Activity Log Example:
+
+	User:Show activity log.
+	Chatbot:Here’s a summary of recent actions:
+	Task added: 'Enable two-factor authentication' (Reminder set for 5 days from now).
+	Quiz started - 5 questions answered.
+	Reminder set: 'Review privacy settings' on [specific date].
 
 CI/CD Pipeline:
 This project is integrated with GitHub Actions for Continuous Integration/Continuous Deployment (CI/CD). The configuration is in the .github/workflows/main.yml file. Upon pushing changes to the repository, the workflow automatically builds and tests the project.
 
 Release Notes
+
+v2.0.0 — 2025-06-27
+
+- Integrated Task Management with GUI
+- Added Reminders with Flexible Timeframes (e.g., "tomorrow", "in 3 days")
+- Developed Cybersecurity Quiz with GUI and Score Tracking
+- Implemented NLP Simulation with Regex-based Keyword Recognition
+- Added Activity Log Feature with Recent Action Tracking
 
 v1.1.0 — 2025-05-26:
 New Features & Enhancements
@@ -92,7 +209,7 @@ CONTRIBUTIONS
         - Use    : For improving user interface with color-coded responses and prompts.
 
     3. Exception Handling and User Input Validation:
-        - Tutorials : Microsoft C# Documentation, YouTube (freeCodeCamp C# tutorials)
+        - Tutorials : Microsoft C# Documentfation, YouTube (freeCodeCamp C# tutorials)
         - Use    : Try-catch block logic in `TextGreeting` and `ResponseSystem`.
 
     4. Audio Playback in Console:

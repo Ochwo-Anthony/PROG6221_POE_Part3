@@ -5,6 +5,17 @@
              StartupUri="IntroWindow.xaml">
     <Application.Resources>
         
+        <SolidColorBrush x:Key="NavBarBackground" Color="black"/>
+        <SolidColorBrush x:Key="NavTextColor" Color="White"/>
+        <SolidColorBrush x:Key="NavComboBoxBackground" Color="White"/>
+        <SolidColorBrush x:Key="NavComboBoxForeground" Color="Black"/>
+
+        <SolidColorBrush x:Key="NavComboBoxItemBackground" Color="Black"/>
+        <!-- Item background -->
+        <SolidColorBrush x:Key="NavComboBoxItemForeground" Color="White"/>
+        <!-- Item text color -->
+
+
         <SolidColorBrush x:Key="AccentColor" Color="#3B82F6" />
         <SolidColorBrush x:Key="PrimaryColor" Color="#0F172A" />
         <SolidColorBrush x:Key="HoverAccentColor" Color="#2563EB" />

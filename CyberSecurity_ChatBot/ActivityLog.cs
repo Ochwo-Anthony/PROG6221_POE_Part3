@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberSecurity_ChatBot
 {
-    class ActivityLog
+    public class ActivityLog
     {
         private List<string> logEntries = new List<string>();
         private int maxEntries = 10;

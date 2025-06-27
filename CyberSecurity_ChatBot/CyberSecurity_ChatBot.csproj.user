@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ActivityLogWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="ChatWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -16,8 +19,17 @@
     <Compile Update="NameEntryWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="QuizWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="TaskManagementWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="ActivityLogWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="ChatWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -28,6 +40,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="NameEntryWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="QuizWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TaskManagementWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

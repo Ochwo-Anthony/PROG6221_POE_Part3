@@ -17,10 +17,29 @@
             <!-- Input Area -->
         </Grid.RowDefinitions>
         
-        <!-- CyberBOT Header -->
-        <TextBlock Text="CyberBOT" FontSize="24" FontWeight="Bold" 
-                   Foreground="White" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="0"/>
+        <!-- CyberBOT Header with Dropdown -->
+        <DockPanel Grid.Row="0" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <!-- Dropdown Menu -->
+            <ComboBox x:Name="NavigationDropdown" Width="150" Margin="0,0,10,0" SelectionChanged="NavigationDropdown_SelectionChanged">
 
+                <ComboBox.Resources>
+                    <!-- Style for Dropdown Items -->
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="{StaticResource NavComboBoxItemBackground}"/>
+                        <Setter Property="Foreground" Value="{StaticResource NavComboBoxItemForeground}"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </ComboBox.Resources>
+
+                <ComboBoxItem Content="Chat" IsSelected="True"/>
+                <ComboBoxItem Content="Tasks"/>
+                <ComboBoxItem Content="Quiz"/>
+                <ComboBoxItem Content="Activity Log"/>
+            </ComboBox>
+
+            <!-- Title -->
+            <TextBlock Text="CyberBOT" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+        </DockPanel>
 
         <!-- Chat Scroll Area -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Name="ChatScroll" Grid.Row="1" Margin="5">

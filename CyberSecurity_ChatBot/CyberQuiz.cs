@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberSecurity_ChatBot
 {
-    class CyberQuiz
+    public class CyberQuiz
     {
         public class QuizQuestion
         {
@@ -124,6 +124,15 @@ namespace CyberSecurity_ChatBot
 
         public string ProcessAnswer(string userAnswer)
         {
+            // Normalize input to lowercase and trim spaces
+            string answer = userAnswer.Trim().ToLower();
+
+            // Validate input - must be "a", "b", "c", or "d"
+            if (answer != "a" && answer != "b" && answer != "c" && answer != "d")
+            {
+                return "Please answer with only A, B, C, or D.";
+            }
+
             var question = questions[currentQuestionIndex];
 
             bool isCorrect = false;
@@ -165,5 +174,31 @@ namespace CyberSecurity_ChatBot
             else
                 return "Don't worry, keep learning and practicing cybersecurity safety.";
         }
+
+        public int GetQuestionCount()
+        {
+            return questions.Count;
+        }
+
+        public CyberQuiz.QuizQuestion GetQuestion(int index)
+        {
+            return questions[index];
+        }
+
+        public bool IsAnswerCorrect(int index, int selectedOption)
+        {
+            return questions[index].CorrectOptionIndex == selectedOption;
+        }
+
+        public string GetFinalFeedback(int score)
+        {
+            if (score >= 8)
+                return "Excellent! You're a cybersecurity pro!";
+            else if (score >= 5)
+                return "Good effort! Keep learning to strengthen your skills.";
+            else
+                return "Don't worry, keep learning and practicing cybersecurity safety.";
+        }
+
     }
 }

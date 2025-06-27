@@ -5,35 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 
 namespace CyberSecurity_ChatBot
 {
-    /// <summary>
-    /// Interaction logic for ChatWindow.xaml
-    /// </summary>
     public partial class ChatWindow : Window
     {
-
         private string userName;
-
         private TaskManager taskManager = new TaskManager();
         private string pendingTaskTitle = "";
         private bool awaitingReminder = false;
 
         private CyberQuiz quiz = new CyberQuiz();
-
         private NlpProcessor nlpProcessor = new NlpProcessor();
-
         private ActivityLog activityLog = new ActivityLog();
-
 
         public ChatWindow(string name)
         {
@@ -44,46 +30,11 @@ namespace CyberSecurity_ChatBot
             Loaded += async (s, e) =>
             {
                 await TypeBotMessage($"Hello {userName}, welcome to CyberBot!");
-                await Task.Delay(500); // Optional pause between messages
+                await Task.Delay(500);
                 await TypeBotMessage("Ask me about passwords, phishing, privacy, 2FA, safe browsing, antivirus, or cloud.");
-                await Task.Delay(500); // Optional pause between messages
-                await TypeBotMessage("Type 'exit' to end the chat.");
+     
             };
-
         }
-
-        private async Task TypeBotMessage(string message)
-        {
-            Border botBubble = new Border
-            {
-                Background = new SolidColorBrush(Color.FromRgb(58, 58, 58)),
-                CornerRadius = new CornerRadius(15),
-                Padding = new Thickness(10),
-                Margin = new Thickness(10),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                MaxWidth = 300
-            };
-
-            TextBlock botText = new TextBlock
-            {
-                Text = "", // Start empty
-                Foreground = Brushes.White,
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            botBubble.Child = botText;
-            ChatStack.Children.Add(botBubble);
-            ChatScroll.ScrollToEnd();
-
-            // Typing animation: show one character at a time
-            foreach (char c in message)
-            {
-                botText.Text += c;
-                await Task.Delay(50); // Typing speed (50ms per character)
-                ChatScroll.ScrollToEnd(); // Keep scroll at the bottom as text grows
-            }
-        }
-
 
         private async void BtnSend_Click(object sender, RoutedEventArgs e)
         {
@@ -96,24 +47,7 @@ namespace CyberSecurity_ChatBot
             txtUserInput.Clear();
 
             // Show typing indicator
-            Border typingIndicator = new Border
-            {
-                Background = new SolidColorBrush(Color.FromRgb(58, 58, 58)),
-                CornerRadius = new CornerRadius(15),
-                Padding = new Thickness(10),
-                Margin = new Thickness(10),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                MaxWidth = 300
-            };
-
-            TextBlock typingText = new TextBlock
-            {
-                Text = "Typing...",
-                Foreground = Brushes.White,
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            typingIndicator.Child = typingText;
+            Border typingIndicator = CreateTypingIndicator();
             ChatStack.Children.Add(typingIndicator);
             ChatScroll.ScrollToEnd();
 
@@ -122,65 +56,71 @@ namespace CyberSecurity_ChatBot
 
             string response = "";
 
-            // NLP SIMULATION: Get intent and details
             var nlpResult = nlpProcessor.ProcessInput(input);
 
             // ========================== NLP ROUTING ==========================
-            if (nlpResult.Intent == "add_task")
+            switch (nlpResult.Intent)
             {
-                string taskTitle = nlpResult.Detail;
-                pendingTaskTitle = taskTitle;
-                response = $"Task '{taskTitle}' added. Would you like a reminder?";
-                awaitingReminder = true;
+                case "add_task":
+                    pendingTaskTitle = nlpResult.Detail;
+                    response = $"Task '{pendingTaskTitle}' added. Would you like a reminder?";
+                    awaitingReminder = true;
+                    activityLog.AddEntry($"Task added: '{pendingTaskTitle}'");
+                    break;
 
-                activityLog.AddEntry($"Task added: '{taskTitle}'");
+                case "start_quiz":
+                    response = quiz.StartQuiz();
+                    activityLog.AddEntry("Quiz started.");
+                    break;
+
+                case "show_history":
+                    response = activityLog.GetRecentLog();
+                    break;
+
+                case "view_tasks":
+                    response = taskManager.ViewTasks();
+                    break;
+
+                case "complete_task":
+                    response = taskManager.CompleteTask(nlpResult.Detail);
+                    activityLog.AddEntry($"Task completed: '{nlpResult.Detail}'");
+                    break;
+
+                case "delete_task":
+                    response = taskManager.DeleteTask(nlpResult.Detail);
+                    activityLog.AddEntry($"Task deleted: '{nlpResult.Detail}'");
+                    break;
+
+                case "general_chat":
+                    response = ResponseSystem.GetResponse(input, userName);
+                    break;
+
+                default:
+                    response = "I'm not sure what you mean. Please try rephrasing your request.";
+                    break;
             }
-            else if (nlpResult.Intent == "start_quiz")
-            {
-                response = quiz.StartQuiz();
-                activityLog.AddEntry("Quiz started.");
-            }
-            else if (quiz.IsQuizInProgress())
+
+            // =================== QUIZ IN PROGRESS ===================
+            if (quiz.IsQuizInProgress() && nlpResult.Intent != "start_quiz")
             {
                 response = quiz.ProcessAnswer(input);
             }
-            else if (nlpResult.Intent == "show_history" || input.ToLower().Contains("show activity log"))
-            {
-                response = activityLog.GetRecentLog();
-            }
-            else if (nlpResult.Intent == "view_tasks")
-            {
-                response = taskManager.ViewTasks();
-            }
-            else if (nlpResult.Intent == "complete_task")
-            {
-                string taskTitle = nlpResult.Detail;
-                response = taskManager.CompleteTask(taskTitle);
-                activityLog.AddEntry($"Task completed: '{taskTitle}'");
-            }
-            else if (nlpResult.Intent == "delete_task")
-            {
-                string taskTitle = nlpResult.Detail;
-                response = taskManager.DeleteTask(taskTitle);
-                activityLog.AddEntry($"Task deleted: '{taskTitle}'");
-            }
+
             // =================== REMINDER PROCESSING ===================
-            else if (awaitingReminder)
+            if (awaitingReminder)
             {
                 if (input.ToLower().Contains("no"))
                 {
                     response = taskManager.AddTask(pendingTaskTitle, $"Remember to {pendingTaskTitle}.");
                     response += "\nTask added without a reminder.";
-                    awaitingReminder = false;
-
                     activityLog.AddEntry($"Task added without reminder: '{pendingTaskTitle}'");
-
+                    awaitingReminder = false;
                     pendingTaskTitle = "";
                 }
                 else
                 {
                     int days = ExtractDaysFromInput(input);
-                    if (days > 0)
+                    if (days >= 0)
                     {
                         DateTime reminderDate = DateTime.Now.AddDays(days);
                         response = taskManager.AddTask(pendingTaskTitle, $"Remember to {pendingTaskTitle}.", reminderDate);
@@ -197,37 +137,95 @@ namespace CyberSecurity_ChatBot
                     }
                 }
             }
-            // =================== DEFAULT CHATBOT RESPONSE ===================
-            else
-            {
-                response = ResponseSystem.GetResponse(input, userName);
-            }
+
+            Console.WriteLine($"Detected Intent: {nlpResult.Intent}, Detail: {nlpResult.Detail}");
+
 
             await TypeBotMessage($"CyberBOT: {response}");
             ChatScroll.ScrollToEnd();
         }
 
+        // ============= Helper Methods =============
 
-
+        private Border CreateTypingIndicator()
+        {
+            return new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(58, 58, 58)),
+                CornerRadius = new CornerRadius(15),
+                Padding = new Thickness(10),
+                Margin = new Thickness(10),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MaxWidth = 300,
+                Child = new TextBlock
+                {
+                    Text = "Typing...",
+                    Foreground = Brushes.White,
+                    TextWrapping = TextWrapping.Wrap
+                }
+            };
+        }
 
         private int ExtractDaysFromInput(string input)
         {
+            input = input.ToLower();
+
+            if (input.Contains("today"))
+                return 0; // same day
+
+            if (input.Contains("tomorrow"))
+                return 1; // next day
+
+            // Optionally add more natural time keywords here
+            if (input.Contains("day after tomorrow"))
+                return 2;
+
             var parts = input.ToLower().Split(' ');
             foreach (var part in parts)
             {
                 if (int.TryParse(part, out int days))
                     return days;
             }
-            return 0;
+            return -1;
         }
 
+        private async Task TypeBotMessage(string message)
+        {
+            Border botBubble = new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(58, 58, 58)),
+                CornerRadius = new CornerRadius(15),
+                Padding = new Thickness(10),
+                Margin = new Thickness(10),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MaxWidth = 300
+            };
+
+            TextBlock botText = new TextBlock
+            {
+                Text = "",
+                Foreground = Brushes.White,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            botBubble.Child = botText;
+            ChatStack.Children.Add(botBubble);
+            ChatScroll.ScrollToEnd();
+
+            foreach (char c in message)
+            {
+                botText.Text += c;
+                await Task.Delay(50);
+                ChatScroll.ScrollToEnd();
+            }
+        }
 
         private void AddUserMessage(string message)
         {
             Border userBubble = new Border
             {
                 Background = Brushes.LimeGreen,
-                CornerRadius = new CornerRadius(15), // ✅ Valid here
+                CornerRadius = new CornerRadius(15),
                 Padding = new Thickness(10),
                 Margin = new Thickness(10),
                 HorizontalAlignment = HorizontalAlignment.Right,
@@ -237,7 +235,7 @@ namespace CyberSecurity_ChatBot
             TextBlock userText = new TextBlock
             {
                 Text = $"You: {message}",
-                TextWrapping = TextWrapping.Wrap,               
+                TextWrapping = TextWrapping.Wrap
             };
 
             userBubble.Child = userText;
@@ -257,6 +255,40 @@ namespace CyberSecurity_ChatBot
             this.Opacity = 0;
             var fadeIn = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(0.5)));
             this.BeginAnimation(Window.OpacityProperty, fadeIn);
+        }
+
+        // ================= Navigation =================
+        private void NavigationDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (NavigationDropdown.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selection = selectedItem.Content.ToString();
+
+                switch (selection)
+                {
+                    case "Chat":
+                        // Already in chat window
+                        break;
+
+                    case "Tasks":
+                        TaskManagementWindow taskWindow = new TaskManagementWindow(taskManager, quiz, activityLog, userName);
+                        taskWindow.Show();
+                        this.Close();
+                        break;
+
+                    case "Quiz":
+                        QuizWindow quizWindow = new QuizWindow(taskManager, quiz, activityLog, userName);
+                        quizWindow.Show();
+                        this.Close();
+                        break;
+
+                    case "Activity Log":
+                        ActivityLogWindow logWindow = new ActivityLogWindow(taskManager, quiz, activityLog, userName);
+                        logWindow.Show();
+                        this.Close();
+                        break;
+                }
+            }
         }
     }
 }

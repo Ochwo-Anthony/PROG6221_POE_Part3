@@ -16,49 +16,51 @@ namespace CyberSecurity_ChatBot
         {
             input = input.ToLower();
 
-            // Handle flexible task addition
-            if (input.Contains("add task") || input.Contains("create task") || input.Contains("set task") || input.Contains("remind me to") || input.Contains("add a reminder"))
+            // Add Task
+            if (Regex.IsMatch(input, @"\b(add|create|set).*(task|reminder)\b|\bremind me to\b", RegexOptions.IgnoreCase))
             {
                 string detail = ExtractTaskDetail(input);
                 ActionHistory.Add($"Task added: '{detail}'");
                 return ("add_task", detail);
             }
 
-            // Start quiz
-            if (input.Contains("start quiz") || input.Contains("launch quiz") || input.Contains("begin quiz"))
+            // Start Quiz
+            if (Regex.IsMatch(input, @"\b(start|launch|begin)\s+quiz\b", RegexOptions.IgnoreCase))
             {
                 ActionHistory.Add("Quiz started.");
                 return ("start_quiz", "");
             }
 
-            // Show history
-            if (input.Contains("what have you done") || input.Contains("show history") || input.Contains("what have you done for me"))
+            // Show History
+            if (Regex.IsMatch(input, @"\b(show|view|display)\s+(history|actions|activity)\b|\bwhat have you done\b", RegexOptions.IgnoreCase))
             {
                 return ("show_history", "");
             }
 
-            // View tasks
-            if (input.Contains("show tasks") || input.Contains("view tasks") || input.Contains("display tasks"))
+            // View Tasks
+            if (Regex.IsMatch(input, @"\b(show|view|display)\s+(tasks|reminders)\b", RegexOptions.IgnoreCase))
             {
                 return ("view_tasks", "");
             }
 
-            // Complete task
-            if (input.Contains("complete task") || input.Contains("mark task"))
+            // Complete Task
+            if (Regex.IsMatch(input, @"\b(complete|mark|finish)\s+(task|reminder)\b", RegexOptions.IgnoreCase))
             {
                 string detail = ExtractTaskDetail(input);
                 return ("complete_task", detail);
             }
 
-            // Delete task
-            if (input.Contains("delete task") || input.Contains("remove task"))
+            // Delete Task
+            if (Regex.IsMatch(input, @"\b(delete|remove)\s+(task|reminder)\b", RegexOptions.IgnoreCase))
             {
                 string detail = ExtractTaskDetail(input);
                 return ("delete_task", detail);
             }
 
+            // If no pattern matched, return general chat
             return ("general_chat", "");
         }
+
 
         // Extracts the task or reminder detail from user input using simple regex
         private string ExtractTaskDetail(string input)
@@ -72,9 +74,9 @@ namespace CyberSecurity_ChatBot
             string[] triggers = { "remind me to", "add a task to", "create task to", "set task to", "add task to", "add a reminder to", "add task", "create task", "set task", "add reminder" };
             foreach (var trigger in triggers)
             {
-                if (input.Contains(trigger))
+                if (input.ToLower().Contains(trigger))
                 {
-                    return input.Replace(trigger, "").Trim();
+                    return input.ToLower().Replace(trigger, "").Trim();
                 }
             }
 

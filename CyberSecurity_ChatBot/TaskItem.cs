@@ -19,6 +19,17 @@ namespace CyberSecurity_ChatBot
             string reminder = ReminderDate.HasValue ? $" (Reminder: {ReminderDate.Value.ToShortDateString()})" : "";
             return $"{Title}: {Description}{reminder} - {status}";
         }
+
+        public string DisplayText
+        {
+            get
+            {
+                if (ReminderDate.HasValue)
+                    return $"{Title} (Reminder: {ReminderDate.Value.ToShortDateString()})";
+                else
+                    return Title;
+            }
+        }
     }
 
     public class TaskManager
@@ -72,6 +83,8 @@ namespace CyberSecurity_ChatBot
             }
             return $"Task '{title}' not found.";
         }
+
+
 
         public List<TaskItem> GetTasks()
         {
