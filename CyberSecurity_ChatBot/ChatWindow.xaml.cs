@@ -23,6 +23,18 @@ namespace CyberSecurity_ChatBot
     {
 
         private string userName;
+
+        private TaskManager taskManager = new TaskManager();
+        private string pendingTaskTitle = "";
+        private bool awaitingReminder = false;
+
+        private CyberQuiz quiz = new CyberQuiz();
+
+        private NlpProcessor nlpProcessor = new NlpProcessor();
+
+        private ActivityLog activityLog = new ActivityLog();
+
+
         public ChatWindow(string name)
         {
             InitializeComponent();
@@ -81,7 +93,6 @@ namespace CyberSecurity_ChatBot
                 return;
 
             AddUserMessage(input);
-
             txtUserInput.Clear();
 
             // Show typing indicator
@@ -106,19 +117,110 @@ namespace CyberSecurity_ChatBot
             ChatStack.Children.Add(typingIndicator);
             ChatScroll.ScrollToEnd();
 
-            // Simulate thinking delay
             await Task.Delay(1000);
-
-            // Remove typing indicator
             ChatStack.Children.Remove(typingIndicator);
 
-            // Get bot response and type it out
-            string response = ResponseSystem.GetResponse(input, userName);
+            string response = "";
+
+            // NLP SIMULATION: Get intent and details
+            var nlpResult = nlpProcessor.ProcessInput(input);
+
+            // ========================== NLP ROUTING ==========================
+            if (nlpResult.Intent == "add_task")
+            {
+                string taskTitle = nlpResult.Detail;
+                pendingTaskTitle = taskTitle;
+                response = $"Task '{taskTitle}' added. Would you like a reminder?";
+                awaitingReminder = true;
+
+                activityLog.AddEntry($"Task added: '{taskTitle}'");
+            }
+            else if (nlpResult.Intent == "start_quiz")
+            {
+                response = quiz.StartQuiz();
+                activityLog.AddEntry("Quiz started.");
+            }
+            else if (quiz.IsQuizInProgress())
+            {
+                response = quiz.ProcessAnswer(input);
+            }
+            else if (nlpResult.Intent == "show_history" || input.ToLower().Contains("show activity log"))
+            {
+                response = activityLog.GetRecentLog();
+            }
+            else if (nlpResult.Intent == "view_tasks")
+            {
+                response = taskManager.ViewTasks();
+            }
+            else if (nlpResult.Intent == "complete_task")
+            {
+                string taskTitle = nlpResult.Detail;
+                response = taskManager.CompleteTask(taskTitle);
+                activityLog.AddEntry($"Task completed: '{taskTitle}'");
+            }
+            else if (nlpResult.Intent == "delete_task")
+            {
+                string taskTitle = nlpResult.Detail;
+                response = taskManager.DeleteTask(taskTitle);
+                activityLog.AddEntry($"Task deleted: '{taskTitle}'");
+            }
+            // =================== REMINDER PROCESSING ===================
+            else if (awaitingReminder)
+            {
+                if (input.ToLower().Contains("no"))
+                {
+                    response = taskManager.AddTask(pendingTaskTitle, $"Remember to {pendingTaskTitle}.");
+                    response += "\nTask added without a reminder.";
+                    awaitingReminder = false;
+
+                    activityLog.AddEntry($"Task added without reminder: '{pendingTaskTitle}'");
+
+                    pendingTaskTitle = "";
+                }
+                else
+                {
+                    int days = ExtractDaysFromInput(input);
+                    if (days > 0)
+                    {
+                        DateTime reminderDate = DateTime.Now.AddDays(days);
+                        response = taskManager.AddTask(pendingTaskTitle, $"Remember to {pendingTaskTitle}.", reminderDate);
+                        response += $"\nReminder set for {reminderDate.ToShortDateString()}.";
+
+                        activityLog.AddEntry($"Reminder set for '{pendingTaskTitle}' on {reminderDate.ToShortDateString()}");
+
+                        awaitingReminder = false;
+                        pendingTaskTitle = "";
+                    }
+                    else
+                    {
+                        response = "I couldn't understand the reminder time. Please specify like 'remind me in 3 days'.";
+                    }
+                }
+            }
+            // =================== DEFAULT CHATBOT RESPONSE ===================
+            else
+            {
+                response = ResponseSystem.GetResponse(input, userName);
+            }
+
             await TypeBotMessage($"CyberBOT: {response}");
-
             ChatScroll.ScrollToEnd();
-
         }
+
+
+
+
+        private int ExtractDaysFromInput(string input)
+        {
+            var parts = input.ToLower().Split(' ');
+            foreach (var part in parts)
+            {
+                if (int.TryParse(part, out int days))
+                    return days;
+            }
+            return 0;
+        }
+
 
         private void AddUserMessage(string message)
         {
